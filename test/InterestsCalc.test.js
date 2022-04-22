@@ -19,7 +19,28 @@ function testSet1() {
   return [begDate, endDate, remainders, rates];
 }
 
+function testSet2() {
+  const begDate = new Date('2020-12-14');
+  const endDate = new Date('2021-01-13');
+
+  const rates = {
+    '2020-12-14': 0.1115,
+    '2020-12-16': 0.21,
+    '2021-01-01': 0.35
+  };
+  const remainders = {
+    '2020-12-14': 487384
+  };
+  return [begDate, endDate, remainders, rates];
+}
+
 const interestsCalc = new InterestsCalc();
+test('interests test', () => {
+  const [begDate, endDate, remainders, rates] = testSet1();
+
+  const interests = interestsCalc.calcInterests(begDate, endDate, remainders, rates);
+  expect(interests).toEqual(undefined);
+});
 test('interests test', () => {
   const [begDate, endDate, remainders, rates] = testSet1();
 
@@ -51,3 +72,4 @@ test('filterMap', () => {
   const result = filterMap('2022-04-01', '2022-04-30', map);
   expect(result).toEqual(expected);
 });
+

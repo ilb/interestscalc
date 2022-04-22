@@ -8,6 +8,8 @@
     "src"
   ],
   "dependencies": {
+    "currency": "^4.1.0",
+    "date-fns": "^2.28.0"
   },
   "devDependencies": {
     "eslint": "^8.4.1",

@@ -1,3 +1,7 @@
+import currency from 'currency.js';
+import differenceInCalendarDays from 'date-fns/differenceInCalendarDays';
+import addDays from 'date-fns/addDays';
+
 export default class InterestsCalc {
   /**
    * Расчет процентов за период.
@@ -74,6 +78,34 @@ export function filterMap(begDate, endDate, map) {
       result.set(date < begDate ? begDate : date, value);
     }
   });
+  return result;
+}
+
+/**
+ * Получить периоды постоянства остатка и ставки
+ * @param {Map} remainders
+ * @param {Map} rates
+ */
+export function getConstPeriods(remainders, rates) {
+  const merged = new Map([...remainders, ...rates]);
+  const iterator = merged.keys();
+  let next = iterator.next();
+  const result = [];
+  let row = {
+    begDate: next.value,
+    remainer: remainders.get(next.value),
+    rate: rates.get(next.value)
+  };
+  while (!next.done) {
+    next = iterator.next();
+    row.endDate = next.value;
+    result.push(row);
+    row = {
+      begDate: addDays(next.value, 1),
+      remainer: remainders.get(next.value),
+      rate: rates.get(next.value)
+    };
+  }
   return result;
 }
 
