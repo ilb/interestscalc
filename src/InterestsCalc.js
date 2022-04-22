@@ -19,7 +19,9 @@ export default class InterestsCalc {
 
 /**
  * Преобразование объекта в Map (дата => значение)
- * @param {*} date
+ * @param {*} map   можно задавать как Map,
+ * так и как обычный объект {'2022-04-01': 0.19, '2022-04-15': 0.3}. Ключем может быть
+ * дата или строка формата YYYY-MM-DD
  * @returns Map
  */
 export function convertMap(map) {
