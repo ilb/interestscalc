@@ -1,6 +1,9 @@
 import { convertTimestamp, convertMap } from './convutils';
 
-export default class OnDateValue {
+/**
+ * Периодические значения (остатки, ставки и т.д. на дату)
+ */
+export default class PeriodValue {
   constructor(map) {
     // преобразуем map в ключи unix timestamp, т.к. одинаковые даты не равны в JS
     this.map = convertMap(map, convertTimestamp);
