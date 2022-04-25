@@ -1,5 +1,5 @@
 /**
- * Преобразование даты из строки YYYY-MM-DD в дату
+ * Преобразование даты из строки YYYY-MM-DD или timestamp в дату
  * @param {*} date
  * @returns Date
  */
@@ -9,19 +9,13 @@ export function convertDate(date) {
   }
   return date;
 }
-
 /**
- * Преобразование объекта в Map (дата => значение)
- * @param {*} map   можно задавать как Map,
- * так и как обычный объект {'2022-04-01': 0.19, '2022-04-15': 0.3}. Ключем может быть
- * дата или строка формата YYYY-MM-DD
- * @returns Map
+ * Преобразование даты из строки YYYY-MM-DD или Date в unix timestamp
+ * @param {*} date
+ * @returns
  */
-export function convertMap(map) {
-  if (!(map instanceof Map)) {
-    map = objToMap(map, convertDate);
-  }
-  return map;
+export function convertTimestamp(date) {
+  return convertDate(date).getTime();
 }
 
 /**
@@ -46,7 +40,6 @@ export function checkPeriod(begDate, endDate) {
  */
 export function filterMap(begDate, endDate, map) {
   [begDate, endDate] = checkPeriod(begDate, endDate);
-  map = convertMap(map);
 
   const result = new Map();
   map.forEach((value, date) => {
@@ -65,7 +58,7 @@ export function filterMap(begDate, endDate, map) {
  * @param {*} valueMapper опциональная функция преобразования значения
  * @returns Map
  */
-export function objToMap(obj, keyMapper, valueMapper) {
+export function convertMap(obj, keyMapper, valueMapper) {
   const map = new Map();
   keyMapper = keyMapper || ((x) => x);
   valueMapper = valueMapper || ((x) => x);

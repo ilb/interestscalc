@@ -1,7 +1,7 @@
 import currency from 'currency.js';
 import differenceInCalendarDays from 'date-fns/differenceInCalendarDays';
 import addDays from 'date-fns/addDays';
-import { checkPeriod, convertMap } from './convutils';
+import { checkPeriod, convertDate, convertMap } from './convutils';
 import { daysOfYear } from './dateutils';
 
 export default class InterestsCalc {
@@ -17,8 +17,8 @@ export default class InterestsCalc {
    */
   calcInterests(begDate, endDate, balances, rates) {
     [begDate, endDate] = checkPeriod(begDate, endDate);
-    balances = convertMap(balances);
-    rates = convertMap(rates);
+    balances = convertMap(balances, convertDate);
+    rates = convertMap(rates, convertDate);
     const uniqueDates = this.getUniqueDates([...balances.keys(), ...rates.keys()]);
     const constPeriods = this.getConstPeriods(begDate, endDate, uniqueDates);
     return this.calcConstPeriods(constPeriods, balances, rates);
