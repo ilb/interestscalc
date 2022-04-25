@@ -19,38 +19,51 @@ export default class InterestsCalc {
     [begDate, endDate] = checkPeriod(begDate, endDate);
     balances = convertMap(balances);
     rates = convertMap(rates);
-    return this.getConstPeriods(balances, rates);
+    const uniqueDates = this.getUniqueDates([...balances.keys(), ...rates.keys()]);
+    const constPeriods = this.getConstPeriods(begDate, endDate, uniqueDates);
+    return this.calcConstPeriods(constPeriods, balances, rates);
   }
 
+  /**
+   * Получить уникальные даты из массив
+   * @param {Map} dates массив дат
+   * @returns массив уникальных дат
+   */
+  getUniqueDates(dates) {
+    //т.к. одинаковые даты это разные объекты, то переводим дату в миллисекунды
+    const uniqueSet = new Set(dates.map((d) => d.getTime()));
+    // переведем в массив дат
+    const uniqueDates = [...uniqueSet].map((d) => new Date(d));
+    return uniqueDates;
+  }
   /**
    * Получить периоды постоянства остатка и ставки
    * @param {Map} balances
    * @param {Map} rates
    */
-  getConstPeriods(balances, rates) {
-    const merged = new Map([...balances, ...rates]);
-    const iterator = merged.keys();
-    let next = iterator.next();
-    const result = [];
-    let begDate = next.value;
-    let row = {
-      begDate: begDate,
-      balance: balances.get(begDate),
-      rate: rates.get(begDate)
-    };
-    while (!next.done) {
-      next = iterator.next();
-      row.endDate = next.value;
+  getConstPeriods(begDate, endDate, uniqueDates) {
+    // удалим дату начала
+    uniqueDates.shift();
+    // добавим конечный период
+    uniqueDates.push(endDate);
+    let result = [];
+    let prevDate = begDate;
+    uniqueDates.forEach((date) => {
+      result.push({ begDate: prevDate, endDate: date });
+      prevDate = addDays(date, 1);
+    });
+    return result;
+  }
+  calcConstPeriods(periods, balances, rates) {
+    let balance, rate;
+    return periods.map((row) => {
+      balance = balances.get(row.begDate) || balance;
+      rate = rates.get(row.begDate) || rate;
+      row.balance = balance;
+      row.rate = rate;
       row.days = differenceInCalendarDays(row.endDate, row.begDate);
       row.interests = currency((row.balance * row.rate * row.days) / daysOfYear(row.endDate)).value;
-      result.push(row);
-      begDate = addDays(next.value, 1);
-      row = {
-        begDate: begDate,
-        balance: balances.get(begDate) || row.balance,
-        rate: rates.get(begDate) || row.rate
-      };
-    }
-    return result;
+      return row;
+    });
   }
 }
