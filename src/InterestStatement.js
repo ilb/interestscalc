@@ -30,8 +30,16 @@ export default class InterestStatement {
   calcInterests(begDate, endDate) {
     [begDate, endDate] = checkPeriod(begDate, endDate);
 
-    const calcDates = uniqueDates([...this.balances.dates(), ...this.rates.dates()]);
-    const calcPeriods = this.getConstPeriods(begDate, endDate, calcDates);
+    // все даты измений остатков, ставок, окончания месяца
+    const allDates = [
+      ...this.balances.dates(),
+      ...this.rates.dates(),
+      ...accruedInterestDates(begDate, endDate)
+    ];
+    // уникальные даты
+    const calcDates = uniqueDates(allDates);
+    // периоды начислений
+    const calcPeriods = getConstPeriods(begDate, endDate, calcDates);
     return calcPeriods.map((row) => {
       row.balance = this.balances.get(row.begDate);
       row.rate = this.rates.get(row.begDate);
@@ -40,23 +48,52 @@ export default class InterestStatement {
       return row;
     });
   }
+}
 
-  /**
-   * Получить периоды постоянства остатка и ставки
-   * @param {Map} balances
-   * @param {Map} rates
-   */
-  getConstPeriods(begDate, endDate, dates) {
-    // удалим дату начала
-    dates.shift();
-    // добавим конечный период
-    dates.push(endDate);
-    let result = [];
-    let prevDate = begDate;
-    dates.forEach((date) => {
-      result.push({ begDate: prevDate, endDate: date });
-      prevDate = addDays(date, 1);
-    });
-    return result;
+/**
+ * Даты начислений %%
+ * @param {Date} begDate
+ * @param {Date} endDate
+ * @returns
+ */
+export function accruedInterestDates(begDate, endDate) {
+  [begDate, endDate] = checkPeriod(begDate, endDate);
+  const result = [];
+  let date = firstDayOfNextOfMonth(begDate);
+  while (date <= endDate) {
+    result.push(date);
+    date = firstDayOfNextOfMonth(addDays(date, 1));
   }
+  return result;
+}
+
+/**
+ * Получить периоды постоянства остатка и ставки
+ * @param {Map} balances
+ * @param {Map} rates
+ */
+export function getConstPeriods(begDate, endDate, dates) {
+  // удалим дату начала
+  dates.shift();
+  let result = [];
+  let prevDate = begDate;
+  dates.forEach((date) => {
+    result.push({ begDate: prevDate, endDate: addDays(date, -1) });
+    prevDate = date;
+  });
+  // добавим конечный период
+  result.push({ begDate: prevDate, endDate });
+  return result;
+}
+
+/**
+ * Первый день следуюшего месяца.
+ * @param {Date} date
+ * @returns
+ */
+export function firstDayOfNextOfMonth(date) {
+  const result = new Date(date);
+  result.setMonth(result.getMonth() + 1);
+  result.setDate(1);
+  return result;
 }

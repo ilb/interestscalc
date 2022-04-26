@@ -13,14 +13,8 @@ export function daysOfYear(year) {
  * @returns boolean
  */
 export function isLeapYear(year) {
+  if (year instanceof Date) {
+    year = year.getFullYear();
+  }
   return year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0);
-}
-
-/**
- * Последний день месяца
- * @param {Date} date
- * @returns
- */
-export function lastDayOfMonth(date) {
-  return new Date(date.getFullYear(), date.getMonth() + 1, 0);
 }
