@@ -1,4 +1,4 @@
-import { convertTimestamp, convertMap } from './convutils';
+import { convertTimestamp, convertMap } from './convutils.js';
 const MAX_TIMESTAMP = 8640000000000000;
 /**
  * Периодические значения (остатки, ставки и т.д. на дату)

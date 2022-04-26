@@ -1,9 +1,9 @@
 import currency from 'currency.js';
 import differenceInCalendarDays from 'date-fns/differenceInCalendarDays';
 import addDays from 'date-fns/addDays';
-import PeriodValue from './PeriodValue';
-import { checkPeriod, uniqueDates } from './convutils';
-import { daysOfYear } from './dateutils';
+import PeriodValue from './PeriodValue.js';
+import { checkPeriod, uniqueDates } from './convutils.js';
+import { daysOfYear } from './dateutils.js';
 
 /**
  * Процентная ведомость
