@@ -1,4 +1,4 @@
-import { checkPeriod, filterMap } from '../src/convutils';
+import { checkPeriod, filterMap, uniqueDates } from '../src/convutils';
 
 test('checkPeriod', () => {
   const [begDate, endDate] = checkPeriod('2022-04-01', '2022-04-30');
@@ -22,5 +22,25 @@ test('filterMap', () => {
   expected.set(new Date('2022-04-15'), 0.3);
 
   const result = filterMap('2022-04-01', '2022-04-30', map);
+  expect(result).toEqual(expected);
+});
+
+test('uniqueDates', () => {
+  const dates = [
+    new Date('2022-03-01'),
+    new Date('2022-04-03'),
+    new Date('2022-04-03'),
+    new Date('2022-04-05'),
+    new Date('2022-04-15'),
+    new Date('2022-04-15'),
+    new Date('2022-03-01')
+  ];
+  const expected = [
+    new Date('2022-03-01'),
+    new Date('2022-04-03'),
+    new Date('2022-04-05'),
+    new Date('2022-04-15')
+  ];
+  const result = uniqueDates(dates);
   expect(result).toEqual(expected);
 });

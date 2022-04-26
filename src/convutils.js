@@ -68,3 +68,15 @@ export function convertMap(obj, keyMapper, valueMapper) {
   }
   return map;
 }
+
+/**
+ * Получить уникальные даты из массива
+ * @param {Array} dates массив дат
+ * @returns массив уникальных дат
+ */
+export function uniqueDates(dates) {
+  //т.к. одинаковые даты это разные объекты, то переводим дату в миллисекунды
+  const uniqueSet = new Set(dates.map((d) => d.getTime()));
+  // и обратно в массив дат
+  return [...uniqueSet].map((d) => new Date(d));
+}

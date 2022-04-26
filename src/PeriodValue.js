@@ -4,6 +4,10 @@ const MAX_TIMESTAMP = 8640000000000000;
  * Периодические значения (остатки, ставки и т.д. на дату)
  */
 export default class PeriodValue {
+  /**
+   *
+   * @param {Map} map значения (дата->значение)
+   */
   constructor(map) {
     // преобразуем map в ключи unix timestamp, т.к. одинаковые даты не равны в JS
     this.map = convertMap(map, convertTimestamp);
@@ -14,6 +18,12 @@ export default class PeriodValue {
     this.nextCount = 0;
     this.resetIterator();
     this.minDate = this.prevDate;
+  }
+  /**
+   * Список дат, на которые заведены значения
+   */
+  dates() {
+    return [...this.map.keys()].map((d) => new Date(d));
   }
   resetIterator() {
     this.iterator = this.map.keys();

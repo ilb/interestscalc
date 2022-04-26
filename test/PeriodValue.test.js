@@ -9,6 +9,8 @@ test('PeriodValue', () => {
 
   const periodValue = new PeriodValue(rates);
 
+  const expectedDates = [new Date('2020-12-14'), new Date('2020-12-16'), new Date('2021-01-01')];
+  expect(periodValue.dates()).toEqual(expectedDates);
   expect(() => periodValue.get('2020-12-13')).toThrow('Invalid date');
   expect(periodValue.get('2020-12-14')).toEqual(0.1115);
   expect(periodValue.get('2020-12-15')).toEqual(0.1115);

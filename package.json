@@ -1,7 +1,7 @@
 {
-  "name": "@ilb/interestscalc",
-  "version": "1.0.21",
-  "description": "interestscalc for javascript",
+  "name": "@ilb/intereststatement",
+  "version": "1.0.0",
+  "description": "intereststatement for javascript",
   "type": "module",
   "main": "src/index.js",
   "files": [
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ilb/interestscalc.git"
+    "url": "https://github.com/ilb/intereststatement.git"
   },
   "author": "",
   "license": "ISC"
