@@ -1,5 +1,5 @@
-import currency from 'currency.js';
 import InterestStatement, { accruedInterestDates } from '../src/InterestStatement';
+import TestDataParser from '@ilb/testdataparser';
 
 function testSet1() {
   const begDate = new Date('2020-12-14');
@@ -48,8 +48,27 @@ test('interests test 1', () => {
   const interestStatement = new InterestStatement(balances, rates);
   const result = interestStatement.calcInterests(begDate, endDate);
   expect(result).toEqual(expected);
-  const total = result.map((r) => r.interests).reduce((a, b) => currency(a).add(b).value, 0);
+  const total = interestStatement.calcInterestsTotal(begDate, endDate);
   expect(total).toEqual(10846.93);
+});
+
+describe('interests test ods', () => {
+  const tdp = new TestDataParser('test/interestsstatement.ods');
+  const testData = tdp.parseAllSheets();
+
+  for (const [key, data] of Object.entries(testData)) {
+    // here is where the magic happens
+    test(`test case ${key}`, () => {
+      const begDate = data['/request/'].begDate;
+      const endDate = data['/request/'].endDate;
+      const balances = new Map(data['#balancesByDate#'].map((row) => [row.date, row.balance]));
+      const rates = new Map(data['#ratesByDate#'].map((row) => [row.date, row.rate]));
+      const expected = data['#interestsStatement#'];
+      const interestStatement = new InterestStatement(balances, rates);
+      const result = interestStatement.calcInterests(begDate, endDate);
+      expect(result).toEqual(expected);
+    });
+  }
 });
 
 test('accruedInterestDates', () => {

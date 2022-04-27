@@ -62,9 +62,14 @@ export function convertMap(obj, keyMapper, valueMapper) {
   const map = new Map();
   keyMapper = keyMapper || ((x) => x);
   valueMapper = valueMapper || ((x) => x);
-
-  for (let k of Object.keys(obj)) {
-    map.set(keyMapper(k), valueMapper(obj[k]));
+  if (obj instanceof Map) {
+    obj.forEach((value, key) => {
+      map.set(keyMapper(key), valueMapper(value));
+    });
+  } else {
+    for (let key of Object.keys(obj)) {
+      map.set(keyMapper(key), valueMapper(obj[key]));
+    }
   }
   return map;
 }

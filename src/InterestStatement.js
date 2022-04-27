@@ -23,7 +23,16 @@ export default class InterestStatement {
     this.rates = new PeriodValue(rates);
   }
   /**
-   * Расчет процентов за период.
+   * Расчет итого %% за период.
+   * @param {Date} begDate дата начала периода
+   * @param {Date} endDate дата окончания периода
+   */
+  calcInterestsTotal(begDate, endDate) {
+    const statement = this.calcInterests(begDate, endDate);
+    return statement.map((r) => r.interests).reduce((a, b) => a.add(b), currency(0)).value;
+  }
+  /**
+   * Расчет процентной ведомости за период.
    * @param {Date} begDate дата начала периода
    * @param {Date} endDate дата окончания периода
    */
