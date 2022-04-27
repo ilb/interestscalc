@@ -63,7 +63,7 @@ export default class InterestStatement {
  * Даты начислений %%
  * @param {Date} begDate
  * @param {Date} endDate
- * @returns
+ * @returns {array} список дат для разбивки начислений %% по месяцам
  */
 export function accruedInterestDates(begDate, endDate) {
   [begDate, endDate] = checkPeriod(begDate, endDate);
@@ -98,7 +98,7 @@ export function getConstPeriods(begDate, endDate, dates) {
 /**
  * Первый день следуюшего месяца.
  * @param {Date} date
- * @returns
+ * @returns {Date} Первый день следуюшего месяца
  */
 export function firstDayOfNextOfMonth(date) {
   const result = new Date(date);

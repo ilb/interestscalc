@@ -1,7 +1,7 @@
 /**
  * Количество дней в году
- * @param {Int} year
- * @returns
+ * @param {number} year
+ * @returns {number}
  */
 export function daysOfYear(year) {
   return isLeapYear(year) ? 366 : 365;
@@ -9,8 +9,8 @@ export function daysOfYear(year) {
 
 /**
  * Является ли год високосным
- * @param {Int} year
- * @returns boolean
+ * @param {number} year
+ * @returns {boolean}
  */
 export function isLeapYear(year) {
   if (year instanceof Date) {

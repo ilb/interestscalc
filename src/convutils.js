@@ -1,7 +1,7 @@
 /**
  * Преобразование даты из строки YYYY-MM-DD или timestamp в дату
  * @param {*} date
- * @returns Date
+ * @returns {Date}
  */
 export function convertDate(date) {
   if (!(date instanceof Date)) {
@@ -12,7 +12,7 @@ export function convertDate(date) {
 /**
  * Преобразование даты из строки YYYY-MM-DD или Date в unix timestamp
  * @param {*} date
- * @returns
+ * @returns {Date}
  */
 export function convertTimestamp(date) {
   return convertDate(date).getTime();
@@ -56,7 +56,7 @@ export function filterMap(begDate, endDate, map) {
  * @param {*} obj входной объект
  * @param {function} keyMapper опциональная функция преобразования ключа
  * @param {*} valueMapper опциональная функция преобразования значения
- * @returns Map
+ * @returns {Map}
  */
 export function convertMap(obj, keyMapper, valueMapper) {
   const map = new Map();
@@ -77,7 +77,7 @@ export function convertMap(obj, keyMapper, valueMapper) {
 /**
  * Получить уникальные даты из массива
  * @param {Array} dates массив дат
- * @returns массив уникальных дат
+ * @returns {Array} массив уникальных дат
  */
 export function uniqueDates(dates) {
   //т.к. одинаковые даты это разные объекты, то переводим дату в миллисекунды
