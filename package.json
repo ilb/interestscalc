@@ -1,6 +1,6 @@
 {
   "name": "@ilb/intereststatement",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "intereststatement for javascript",
   "type": "module",
   "main": "src/index.js",
